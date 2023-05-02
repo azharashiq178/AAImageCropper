@@ -18,6 +18,7 @@
 		7EEFA06E2A00FC2B00B910D4 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEFA06D2A00FC2B00B910D4 /* PinchToZoom.swift */; };
 		7EEFA0702A00FE5500B910D4 /* ScrollViewOffsetReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEFA06F2A00FE5500B910D4 /* ScrollViewOffsetReader.swift */; };
 		7EEFA0722A00FF3A00B910D4 /* ScrollViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEFA0712A00FF3A00B910D4 /* ScrollViewModifier.swift */; };
+		7EEFA0742A010F9000B910D4 /* AAImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEFA0732A010F9000B910D4 /* AAImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		7EEFA06D2A00FC2B00B910D4 /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
 		7EEFA06F2A00FE5500B910D4 /* ScrollViewOffsetReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOffsetReader.swift; sourceTree = "<group>"; };
 		7EEFA0712A00FF3A00B910D4 /* ScrollViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewModifier.swift; sourceTree = "<group>"; };
+		7EEFA0732A010F9000B910D4 /* AAImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAImageLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				7EEFA06D2A00FC2B00B910D4 /* PinchToZoom.swift */,
 				7EEFA06F2A00FE5500B910D4 /* ScrollViewOffsetReader.swift */,
 				7EEFA0712A00FF3A00B910D4 /* ScrollViewModifier.swift */,
+				7EEFA0732A010F9000B910D4 /* AAImageLoader.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				7EEFA0702A00FE5500B910D4 /* ScrollViewOffsetReader.swift in Sources */,
 				7E6061A829F5CC5A0001DF05 /* AAGridView.swift in Sources */,
 				7EEFA06E2A00FC2B00B910D4 /* PinchToZoom.swift in Sources */,
+				7EEFA0742A010F9000B910D4 /* AAImageLoader.swift in Sources */,
 				7E60617D29F5CB160001DF05 /* AAImageCropperApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,7 +373,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -423,7 +427,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -444,6 +448,7 @@
 				DEVELOPMENT_TEAM = 9AUFUUBW55;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo usage";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -473,6 +478,7 @@
 				DEVELOPMENT_TEAM = 9AUFUUBW55;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo usage";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

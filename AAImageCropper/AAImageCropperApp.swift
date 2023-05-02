@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct AAImageCropperApp: App {
     var body: some Scene {
-        WindowGroup {
+        return WindowGroup {
             ContentView()
         }
     }
