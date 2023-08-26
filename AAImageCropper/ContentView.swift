@@ -7,21 +7,48 @@
 
 import SwiftUI
 import UIKit
-import Photos
 
 struct ContentView: View {
-    @State var allPhotos : [PHAsset] = [PHAsset]()
+    @State var allPhotos : [Image] = []
     @State var images : [Image] = [Image]()
     @State var selectedImage : Image? = nil
+    @State var highlightedImage : Image? = nil
+    @State var isAnimating = false
     let loader = AAImageLoader()
     var body: some View {
         
-
+        
         return NavigationView {
-            VStack {
-                getCropperView()
-                    .frame(height: UIScreen.main.bounds.height/2)
-                getImagesFromCamera()
+            ZStack {
+                VStack {
+                    getCropperView()
+                        .frame(height: UIScreen.main.bounds.height/2)
+                    getImagesFromCamera()
+                }
+                if let image = highlightedImage {
+                    if isAnimating {
+                        image
+                            .resizable()
+                            .cornerRadius(10)
+                            .padding([.leading], 10)
+                            .frame(width: 100, height: 100)
+                            .position(x: draggedLocation.x, y: draggedLocation.y - 100)
+                            .wiggling()
+                    }
+                    else {
+                        image
+                            .resizable()
+                            .cornerRadius(10)
+                            .padding([.leading], 10)
+                            .frame(width: 100, height: 100)
+                            .position(x: draggedLocation.x, y: draggedLocation.y - 100)
+                            .onAppear() {
+//                                DispatchQueue.main.async {
+//                                    self.isAnimating = true
+//                                }
+                            }
+                    }
+                }
             }
             .navigationTitle("Cropper")
             .navigationBarTitleDisplayMode(.inline)
@@ -29,6 +56,7 @@ struct ContentView: View {
         }
         .onAppear() {
             loader.loadPhotos { photos in
+            } successImage: { photos in
                 DispatchQueue.main.async {
                     if allPhotos.count == 0 {
                         allPhotos = photos
@@ -38,10 +66,6 @@ struct ContentView: View {
                     }
                     
                 }
-            } successImage: { photos in
-    //            DispatchQueue.main.async {
-    //                self.images = photos
-    //            }
             }
         }
     }
@@ -49,79 +73,79 @@ struct ContentView: View {
     
     func selectFeaturedImage(from index : Int) {
         
-        AAImageLoader.imageFrom(asset: self.allPhotos[index], size: PHImageManagerMaximumSize) { photo in
-            selectedImage = photo
-        }
+        selectedImage = self.allPhotos[index]
         
     }
     @GestureState var press = false
     @State var isDraggingInsideMainView = false
+    @State var selectedIndex = 0
+    @State var draggedLocation: CGPoint = .zero
     func getImagesFromCamera() -> some View {
         
-        List {
+        
+        ZStack {
             
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
-                ForEach((0..<self.allPhotos.count), id: \.self) { index in
-                    if allPhotos.count != 0 {
-                        CustomImage.init(imageAsset: self.allPhotos[index], index: index)
-                            .onTapGesture {
-                                self.selectFeaturedImage(from: index)
+            List {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
+                    ForEach((0..<self.allPhotos.count), id: \.self) { index in
+                        if allPhotos.count != 0 {
+                            ZStack {
+                                self.allPhotos[index]
+                                    .resizable()
+                                    .overlay(selectedIndex == index ? Color.white.opacity(0.5) : Color.clear)
+                                    .cornerRadius(10)
+                                    .padding([.leading], 10)
+                                    .frame(width: 100, height: 100)
+                                
+                                    .gesture(
+                                        LongPressGesture()
+                                            .onEnded({ val in
+                                                self.highlightedImage = self.allPhotos[index]
+                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                                                    self.isAnimating = true
+                                                }
+                                            })
+                                            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .global))
+                                            .updating($press, body: { value, state, transaction in
+                                                switch value {
+                                                case .first(let isFirstCompleted):
+                                                    print("First \(isFirstCompleted)")
+                                                    self.draggedLocation = CGPoint.init(x: -100, y: -100)
+                                                case .second(let second, let draggedValue):
+                                                    print("Second \(second)")
+                                                    print(draggedValue?.location)
+                                                    if let location = draggedValue?.location {
+                                                        self.isDraggingInsideMainView = true
+                                                        self.draggedLocation = location
+                                                    }
+                                                }
+                                            })
+                                            .onEnded({ gestureVal in
+                                                print(gestureVal)
+                                                self.highlightedImage = nil
+                                                self.isAnimating = false
+                                                if draggedLocation.y < (UIScreen.main.bounds.height/2) {
+                                                    print("ended")
+                                                    self.selectFeaturedImage(from: index)
+                                                    self.selectedIndex = index
+//                                                    draggedLocation = CGPoint(x: -500, y: 300)
+                                                }
+                                            })
+                                    )
                             }
-                            .gesture(
-                                LongPressGesture()
-                                    .sequenced(before: DragGesture())
-                                    .updating($press, body: { value, state, transaction in
-                                        switch value {
-                                        case .first(let isFirstCompleted):
-                                            print("First \(isFirstCompleted)")
-                                        case .second(let second, let draggedValue):
-                                            print("Second \(second)")
-                                            print(draggedValue?.location)
-                                            if let location = draggedValue?.location {
-                                                self.isDraggingInsideMainView = true
-                                            }
-                                        }
-                                    })
-                                    .onEnded({ gestureVal in
-                                        print(gestureVal)
-                                        print("ended")
-                                        self.selectFeaturedImage(from: index)
-                                    })
-                                    
-                            )
-//                            .gesture(
-//                                DragGesture()
-//                                    .onChanged { gesture in
-//                                        print("Here")
-////                                        offset = gesture.translation
-//                                    }
-//                                    .onEnded { _ in
-//                                        print("Here1")
-////                                        if abs(offset.width) > 100 {
-////                                            // remove the card
-////                                        } else {
-////                                            offset = .zero
-////                                        }
-//                                    }
-//                            )
-
-                       
+                        }
+                        
                     }
-                    
                 }
+                .listRowBackground(Color.black)
+                .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             }
-            .listRowBackground(Color.black)
-            .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listStyle(.plain)
+            .listItemTint(.black)
+            .background(Color.black)
         }
-        .listStyle(.plain)
-        .listItemTint(.black)
-        .background(Color.black)
     }
     func getCropperView() -> some View {
-        
-        
-        
-        
         return GeometryReader { proxy in
             if selectedImage != nil {
                 self.selectedImage!
@@ -140,33 +164,5 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .background(Color.red)
-    }
-}
-
-
-
-
-
-struct CustomImage : View {
-    
-    var imageAsset : PHAsset
-    var index : Int
-    
-    @State var image : Image = Image("")
-    
-    var body: some View {
-        
-        return self.image
-            .resizable()
-            .cornerRadius(10)
-            .padding([.leading], 10)
-            .frame(width: 100, height: 100)
-            .onAppear() {
-                AAImageLoader.imageFrom(asset: imageAsset, size: CGSize.init(width: 100, height: 100)) { photo in
-                        self.image = photo
-                    
-                }
-            }
-            
     }
 }

@@ -21,16 +21,22 @@ struct ScrollViewModifier: ViewModifier {
     
     var doubleTapGesture: some Gesture {
         TapGesture(count: 2).onEnded {
-            if currentScale <= min { currentScale = max } else
-            if currentScale >= max { currentScale = min } else {
-                currentScale = ((max - min) * 0.5 + min) < currentScale ? max : min
-            }
-            isGridHidden = false
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-                self.isGridHidden = true
-            }
+            self.zoomInZoomOut()
         }
     }
+    
+    func zoomInZoomOut() {
+        if currentScale <= min { currentScale = max } else
+        if currentScale >= max { currentScale = min } else {
+            currentScale = ((max - min) * 0.5 + min) < currentScale ? max : min
+        }
+        isGridHidden = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            self.isGridHidden = true
+        }
+    }
+    
+    
     @GestureState private var dragOffset: CGSize = .zero
     
     
@@ -53,6 +59,19 @@ struct ScrollViewModifier: ViewModifier {
             .animation(.easeInOut, value: currentScale)
             if isPinching || !isGridHidden {
                 AAGridView()
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Button(action: {
+                        zoomInZoomOut()
+                    }, label: {
+                        Image(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
+                            .foregroundColor(.white)
+                    })
+                    .padding()
+                    Spacer()
+                }
             }
         }
 

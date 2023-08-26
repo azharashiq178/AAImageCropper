@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E31A2672A9A2257008BE92B /* Wiggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E31A2662A9A2257008BE92B /* Wiggle.swift */; };
 		7E60617D29F5CB160001DF05 /* AAImageCropperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E60617C29F5CB160001DF05 /* AAImageCropperApp.swift */; };
 		7E60617F29F5CB160001DF05 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E60617E29F5CB160001DF05 /* ContentView.swift */; };
 		7E60618129F5CB160001DF05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E60618029F5CB160001DF05 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E31A2662A9A2257008BE92B /* Wiggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wiggle.swift; sourceTree = "<group>"; };
 		7E60617929F5CB160001DF05 /* AAImageCropper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AAImageCropper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E60617C29F5CB160001DF05 /* AAImageCropperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAImageCropperApp.swift; sourceTree = "<group>"; };
 		7E60617E29F5CB160001DF05 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				7EEFA06F2A00FE5500B910D4 /* ScrollViewOffsetReader.swift */,
 				7EEFA0712A00FF3A00B910D4 /* ScrollViewModifier.swift */,
 				7EEFA0732A010F9000B910D4 /* AAImageLoader.swift */,
+				7E31A2662A9A2257008BE92B /* Wiggle.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				7E6061A829F5CC5A0001DF05 /* AAGridView.swift in Sources */,
 				7EEFA06E2A00FC2B00B910D4 /* PinchToZoom.swift in Sources */,
 				7EEFA0742A010F9000B910D4 /* AAImageLoader.swift in Sources */,
+				7E31A2672A9A2257008BE92B /* Wiggle.swift in Sources */,
 				7E60617D29F5CB160001DF05 /* AAImageCropperApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

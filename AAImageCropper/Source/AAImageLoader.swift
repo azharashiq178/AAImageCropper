@@ -29,15 +29,30 @@ class AAImageLoader: NSObject {
     }
     
     private func loadAllPhotos() {
-        
-        let fetchOptions: PHFetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        fetchResult.enumerateObjects({ (object, index, stop) -> Void in
-            self.assets.append(object)
-            if self.assets.count == fetchResult.count{ self.success!(self.assets) }
-        })
-    }
+            let fetchOptions: PHFetchOptions = PHFetchOptions()
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+
+            let imageManager = PHImageManager.default()
+
+            fetchResult.enumerateObjects { (asset, index, stop) in
+                let requestOptions = PHImageRequestOptions()
+                requestOptions.isSynchronous = true
+                requestOptions.deliveryMode = .highQualityFormat
+
+                imageManager.requestImageData(for: asset, options: requestOptions) { (imageData, dataUTI, orientation, info) in
+                    if let imageData = imageData, let uiImage: UIImage = UIImage(data: imageData) {
+                        let swiftUIImage = Image(uiImage: uiImage)
+                        self.images.append(swiftUIImage)
+                    }
+
+                    if index == fetchResult.count - 1 {
+                        // Do something with the images array here, such as updating your UI.
+                        self.successImages?(self.images)
+                    }
+                }
+            }
+        }
     
 //    func convertAllImages() {
 //        for i in 0..<assets.count {
