@@ -101,9 +101,6 @@ struct ContentView: View {
                                         LongPressGesture()
                                             .onEnded({ val in
                                                 self.highlightedImage = self.allPhotos[index]
-                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-                                                    self.isAnimating = true
-                                                }
                                             })
                                             .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .global))
                                             .updating($press, body: { value, state, transaction in
@@ -116,6 +113,11 @@ struct ContentView: View {
                                                     print(draggedValue?.location)
                                                     if let location = draggedValue?.location {
                                                         self.isDraggingInsideMainView = true
+                                                        if self.draggedLocation != location, !isAnimating {
+                                                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+                                                                self.isAnimating = true
+                                                            }
+                                                        }
                                                         self.draggedLocation = location
                                                     }
                                                 }
